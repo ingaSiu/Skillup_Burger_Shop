@@ -1,8 +1,15 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import burger1 from "../../assets/burger1.png";
-import burger2 from "../../assets/burger2.png";
-// import burger3 here
+import { Link } from 'react-router-dom';
+import React from 'react';
+import burger1 from '../../assets/burger1.png';
+import burger2 from '../../assets/burger2.png';
+import burger3 from '../../assets/burger2.png';
+import { useState } from 'react';
+
+const items = [
+  { title: 'Cheese Burger', img: burger1, price: 250 },
+  { title: 'Veg Cheese Burger', img: burger2, price: 400 },
+  { title: 'Cheese Burger with crispy fries', img: burger3, price: 550 },
+];
 
 const CartItem = ({ value, title, img, increment, decrement }) => (
   <div className="cartItem">
@@ -13,57 +20,62 @@ const CartItem = ({ value, title, img, increment, decrement }) => (
 
     <div>
       <button onClick={decrement}>-</button>
-      <input type="number" readOnly value={value} />
+      <input value={value} readOnly />
       <button onClick={increment}>+</button>
     </div>
   </div>
 );
 
 const Cart = () => {
-  const increment = (item) => {};
+  const [itemCounts, setItemCounts] = useState([0, 0, 0]);
 
-  const decrement = (item) => {};
+  const increment = (index) => {
+    const newCounts = [...itemCounts];
+    newCounts[index]++;
+    setItemCounts(newCounts);
+  };
+
+  const decrement = (index) => {
+    const newCounts = [...itemCounts];
+    if (newCounts[index] > 0) {
+      newCounts[index]--;
+      setItemCounts(newCounts);
+    }
+  };
+
+  const totalPrice = itemCounts.reduce((total, count, index) => {
+    return total + count * items[index].price;
+  }, 0);
 
   return (
     <section className="cart">
       <main>
-        <CartItem
-          title={"Cheese Burger"}
-          img={burger1}
-          value={0}
-          increment={() => increment(1)}
-
-        // Add the function for decrementing the order by 1 
-       
-        />
-        <CartItem
-          title={"Veg Cheese Burger"}
-          img={burger2}
-          value={0}
-          increment={() => increment(2)}
-        // Add the function for decrementing the order by 2
-       
-        />
-
-        {/* Fill up the code for Cheese Burger similarly */}
-       
-
+        {items.map((item, index) => (
+          <CartItem
+            key={index}
+            title={item.title}
+            img={item.img}
+            value={itemCounts[index]}
+            increment={() => increment(index)}
+            decrement={() => decrement(index)}
+          />
+        ))}
         <article>
           <div>
             <h4>Sub Total</h4>
-            <p>₹{2000}</p>
+            <p>₹{totalPrice}</p>
           </div>
           <div>
             <h4>Tax</h4>
-            <p>₹{2000 * 0.18}</p>
+            <p>₹{totalPrice * 0.18}</p>
           </div>
           <div>
             <h4>Shipping Charges</h4>
             <p>₹{200}</p>
-          </div>{" "}
+          </div>
           <div>
             <h4>Total</h4>
-            <p>₹{2000 + 2000 * 0.18 + 200}</p>
+            <p>₹{totalPrice + totalPrice * 0.18 + 200}</p>
           </div>
           <Link to="/shipping">Checkout</Link>
         </article>
