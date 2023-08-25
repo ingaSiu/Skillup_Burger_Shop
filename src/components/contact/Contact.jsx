@@ -15,12 +15,12 @@ const Contact = () => {
 
   const emailRegex = /^([a-zA-Z0-9._]+)@([a-zA-Z0-9])+.([a-z]+)(.[a-z]+)?$/;
 
-  const sendEmail = () => {
+  const sendEmail = async () => {
     try {
-      axios
+      await axios
         .post(
           CONTACT_API_URL,
-          { name: name, email: email, message: message },
+          { Name: name, Email: email, Message: message },
           {
             headers: {
               'Content-Type': 'application/json',
