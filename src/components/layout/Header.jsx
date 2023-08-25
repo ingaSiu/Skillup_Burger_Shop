@@ -1,9 +1,7 @@
 // Write all the code here
 
-import { FiLogIn, FiShoppingCart } from 'react-icons/fi';
-
 import DropdownMenu from './DropdownMenu';
-import { FaUser } from 'react-icons/fa';
+import { FiShoppingCart } from 'react-icons/fi';
 import { IoFastFoodOutline } from 'react-icons/io5';
 import { Link } from 'react-router-dom';
 
